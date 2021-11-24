@@ -1,5 +1,5 @@
 -- Get Johan Andersson's age
-SELECT `name` AS "Player Name", timestampdiff(
+SELECT timestampdiff(
 		YEAR, 
         STR_TO_DATE(SUBSTRING(personNumber, 1, 8), "%Y%m%d"),
         CURDATE()) AS Age
@@ -7,30 +7,30 @@ FROM player
 WHERE personNumber = "19960225-2380";
 
 -- Get Johan Andersson's age using view
-SELECT `name` AS "Player Name", age AS Age
+SELECT age AS Age
 FROM playerAge
 WHERE personNumber = "19960225-2380";
 
 -- Get the competition date for Big Golf Cup Skövde
-SELECT `name` AS "Competition", `date` AS "Date"
+SELECT `date` AS "Date"
 FROM competition
 WHERE `name` LIKE "Big Golf Cup Skövde";
 
 -- Get the material for Johan Andersson's club
-SELECT p.`name` AS "Player Name", c.material AS "Club Material"
+SELECT c.material AS "Club Material"
 FROM player AS p JOIN club AS c
 	USING(personNumber)
 WHERE p.`name` LIKE "Johan Andersson";
 
 -- Get all Johan Andersson's jackets
-SELECT p.`name` AS "Player Name", j.model AS "Jacket Model",
+SELECT j.model AS "Jacket Model",
 	j.material AS "Jacket Material", j.size AS "Jacket Size"
 FROM player AS p JOIN jacket AS j
 	USING(personNumber)
 WHERE p.`name` LIKE "Johan Andersson";
 
 -- Get all players at Big Golf Cup Skövde
-SELECT c.`name` AS "Competition", p.`name` AS "Player Name"
+SELECT p.`name` AS "Player Name"
 FROM competition AS c INNER JOIN competition_player AS c_p
 	ON c.competitionId = c_p.competitionId
 INNER JOIN player AS p
@@ -38,7 +38,7 @@ INNER JOIN player AS p
 WHERE c.`name` LIKE "Big Golf Cup Skövde";
 
 -- Get the rains windspeeds at Big Golf Cup Skövde
-SELECT c.`name` AS "Competition", r.`windSpeed` AS "Rain Wind Speed"
+SELECT r.`windSpeed` AS "Rain Wind Speed"
 FROM competition AS c INNER JOIN rain AS r 
 	USING(competitionId)
 WHERE c.`name` LIKE "Big Golf Cup Skövde";
@@ -53,7 +53,7 @@ WHERE c.`name` LIKE "Big Golf Cup Skövde";
 
 
 -- Get all players under age of 30
-SELECT * 
+SELECT players.`Player Name`
 FROM (SELECT `name` AS "Player Name", 
 	timestampdiff(
 		YEAR,
@@ -63,7 +63,9 @@ FROM (SELECT `name` AS "Player Name",
 WHERE players.Age < 30;
 
 -- Get all players under age of 30 using view
-SELECT * FROM playerAge;
+SELECT `name` as "Player Name" 
+FROM playerAge
+WHERE age < 30;
 
 -- Remove all Johan Andersson's jackets
 DELETE j
